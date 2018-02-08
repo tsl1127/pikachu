@@ -12,7 +12,7 @@
             window.clearInterval(id)
             fn&fn.call()
         }
-    },20)
+    },20)//setInterval读了一次20ms之后    就不会再读了
   } 
   let code = `
   /*
@@ -195,4 +195,12 @@
   */
   `
   writeCode('',code)
+  $('.actions').on('click','button',function(e){
+    let $button = $(e.currentTarget)
+    let speed = $button.attr('data-speed')
+    console.log(speed)
+    $button.addClass('active')
+    .siblings('.active').removeClass('active')  //兄弟姐妹有active的就删掉
+})
 }.call()
+
