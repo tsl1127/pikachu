@@ -1,18 +1,41 @@
 !function(){
+    var duration =50
+    $('.actions').on('click','button',function(e){
+        let $button = $(e.currentTarget)
+        let speed = $button.attr('data-speed')
+        console.log(speed)
+        $button.addClass('active')
+        .siblings('.active').removeClass('active')  //兄弟姐妹有active的就删掉
+        switch(speed){
+            case 'slow':
+                duration=100
+                break;
+            case 'normal':
+                duration=50
+                break;
+            case 'fast':
+                duration=10
+                break;  
+        }
+    })
   function writeCode(prefix,code,fn){
     let container = document.querySelector('#code')
     let styleTag = document.querySelector('#styleTag')
     let n=0
-    let id = setInterval(()=>{
+    let id
+    id= setTimeout(function run(){
+        //  console.log(duration)
         n+=1
         container.innerHTML=code.substring(0,n)
         styleTag.innerHTML = code.substring(0,n)
         container.scrollTop = container.scrollHeight
-        if(n>=code.length){
-            window.clearInterval(id)
-            fn&fn.call()
+        if(n<code.length){
+           id= setTimeout(run,duration)           
         }
-    },20)//setInterval读了一次20ms之后    就不会再读了
+        else{
+            fn&&fn.call()
+        }
+    },duration)//setInterval读了一次20ms之后    就不会再读了
   } 
   let code = `
   /*
@@ -195,12 +218,5 @@
   */
   `
   writeCode('',code)
-  $('.actions').on('click','button',function(e){
-    let $button = $(e.currentTarget)
-    let speed = $button.attr('data-speed')
-    console.log(speed)
-    $button.addClass('active')
-    .siblings('.active').removeClass('active')  //兄弟姐妹有active的就删掉
-})
 }.call()
 
